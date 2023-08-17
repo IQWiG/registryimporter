@@ -17,5 +17,5 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Language: en-US
-URL: https://github.com/claudiakapp/registryimporter
-BugReports: https://github.com/claudiakapp/registryimporter/issues
+URL: https://github.com/IQWiG/registryimporter
+BugReports: https://github.com/IQWiG/registryimporter/issues
