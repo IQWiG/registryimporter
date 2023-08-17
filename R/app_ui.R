@@ -10,7 +10,11 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # Your application UI logic
     fluidPage(
-      h1("registryimporter")
+      h1("registryimporter"),
+      fileInput("upload", NULL, buttonLabel = "Upload...", width = "50%"),
+      downloadButton("download", "Download"),
+      h4("Download preview"),
+      verbatimTextOutput("downloadpreview")
     )
   )
 }
