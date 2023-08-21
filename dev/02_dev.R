@@ -17,15 +17,24 @@ use_import_from("jsonlite", "read_json")
 use_import_from("lubridate", "year")
 use_import_from("purrr", "map")
 use_import_from("purrr", "map_depth")
+use_import_from("purrr", "map_dfr")
 use_import_from("purrr", "modify_in")
 use_import_from("purrr", "pluck")
 use_import_from("shinyFeedback", "useShinyFeedback")
 use_import_from("shinyFeedback", "feedbackDanger")
+use_import_from("utils", "capture.output")
+use_import_from("utils", "write.table")
+use_import_from("dplyr", "pull")
+use_import_from("dplyr", "filter")
+use_import_from("rlang", ".data")
+
 golem::add_module("01_CTgovConverter")
 golem::add_module("fileUpload")
 golem::add_module("fileDownload")
 golem::add_module("downloadPreview")
 golem::add_module("uploadInfo")
+
+golem::add_module("02_CTISConverter")
 
 
 ## Dependencies ----

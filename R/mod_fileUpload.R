@@ -10,7 +10,6 @@
 mod_fileUpload_ui <- function(id, placeholder, accept){
   ns <- NS(id)
   tagList(
-    shinyFeedback::useShinyFeedback(),
     fileInput(ns("upload"), NULL, buttonLabel = "Upload ...", width = "50%", placeholder = placeholder, accept = accept)
   )
 }

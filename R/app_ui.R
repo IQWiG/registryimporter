@@ -10,16 +10,14 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # Your application UI logic
     navbarPage("Registry Importer",
+               theme = bs_theme(bootswatch = "sandstone"),
       tabPanel("CT.gov",
-               h2("ClinicalTrials.gov JSON to RIS Converter"),
-               mod_01_CTgovConverter_ui("01_CTgovConverter_1"),
-               textOutput("test")
-      )
-
-#      fileInput("upload", NULL, buttonLabel = "Upload...", width = "50%"),
-#      downloadButton("download", "Download"),
-#      h4("Download preview"),
-#      verbatimTextOutput("downloadpreview")
+               h4("JSON to RIS"),
+               mod_01_CTgovConverter_ui("01_CTgovConverter_1")
+      ),
+      tabPanel("CTIS",
+               h4("CSV to Tab Delimited"),
+               mod_02_CTISConverter_ui("02_CTISConverter_2"))
     )
   )
 }

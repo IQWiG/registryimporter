@@ -17,11 +17,20 @@ mod_uploadInfo_ui <- function(id){
 #' uploadInfo Server Functions
 #'
 #' @noRd
-mod_uploadInfo_server <- function(id, json ){
-  stopifnot(is.reactive(json))
+mod_uploadInfo_server <- function(id, rawdata ){
+  stopifnot(is.reactive(rawdata))
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-    output$uploadInfo <- renderText({paste(length(json()), "references uploaded.")})
+    references <- reactive({
+      if(is.data.frame(rawdata())){
+        nrow(rawdata())
+      } else if(is.list(rawdata())){
+        length(rawdata())
+      }
+
+    })
+    output$uploadInfo <- renderText({paste(references(), "references uploaded.")})
+
 
   })
 }

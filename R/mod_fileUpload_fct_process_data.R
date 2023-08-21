@@ -10,10 +10,18 @@ load_file <- function(name, datapath){
 process_data <- function(rawdata, source){
   if(source == "CTgov"){
       json <- map(rawdata, \(study) create_ris_entry(study))
-      json <- ctgov_json_to_ris(json)
-      return(json)
+      ris <- ctgov_json_to_ris(json)
+      return(ris)
+
   }else if(source == "CTIS"){
-    return("CTIS")
+    dataframe <- rawdata %>%
+      purrr::map_dfr(stringr::str_replace_all, pattern = "\n|\r\n", replacement = ";")
+    names(dataframe) <- rename_cols_for_endnote(dataframe)
+    dataframe <- create_URL(dataframe = dataframe,
+                            trial_number = "Accession Number")
+    dataframe <- utils::capture.output(utils::write.table(dataframe, sep = "\t", quote = F, row.names = F, col.names= T))
+    tab_delim <- c("*#Web Page", dataframe)
+    return(tab_delim)
   }
 
 }
@@ -58,21 +66,44 @@ ctgov_json_to_ris <- function(json) {
                      "URL" = "UR  - ")
 
   for (ris_field in seq_along(ris_fields)) {
-    # position <- map(json, \(study) names(study) == names(ris_fields)[ris_field]) %>%
-    #    unique() %>%
-    #    unlist()
-    #  stopifnot("errror in parsing json file" = length(position) == length(ris_fields))
-    # json <- registryEntries[1:3]
-    #  json %>% map(\(string) paste0(ris_fields[[i]],"  - ", string))
-
-    #  map(json[position], \(string) paste0(ris_fields[i],"  - ", string))
-
-    #  modify_in(json, list(1, names(ris_fields)[i]), \(vectorObj) paste0("PY  - ", vectorObj))
-
-    json <- json %>%  map(\(study_index) modify_in(study_index, names(ris_fields)[ris_field], \(vectorObj) paste0(ris_fields[ris_field], vectorObj)))
+    json <- json %>%  map(\(study_index) modify_in(study_index,
+                                                   names(ris_fields)[ris_field],
+                                                   \(vectorObj) paste0(ris_fields[ris_field], vectorObj)))
 
   }
   json <- map(json, \(study) c(Type = "TY  - WEB", study, EndRef = "ER  - ", "")) %>%
     unlist()
   return(json)
+}
+
+
+#'Create URL for references
+#'
+#' @description creates an extra column in the data frame, generating the reference-specific CTIS URL.
+#'
+#' @return A tibble with one additional column "URL"
+#'
+#' @noRd
+create_URL <- function(dataframe, trial_number) {
+  if(anyNA(dataframe[[eval(trial_number)]])) {
+    stop("Trial numbers are missing, cannot create URLS", call. = F)
+  }
+  URL <- paste0("https://euclinicaltrials.eu/app/#/view/",dataframe[[eval(trial_number)]],"?lang=en")
+  dataframe$URL <- URL
+  return(dataframe)
+}
+
+#'Rename Column Names for Endnote
+#'
+#' @description Prepare the column names for Endnote.
+#' @importFrom dplyr filter
+#' @importFrom dplyr pull
+#' @return A character vector with the new column names
+#'
+#' @noRd
+rename_cols_for_endnote <- function(dataframe) {
+  endnote_names <- lookup %>%
+    dplyr::filter( .data$original_title %in% names(dataframe)) %>%
+    pull(.data$endnote_title)
+  return(endnote_names)
 }

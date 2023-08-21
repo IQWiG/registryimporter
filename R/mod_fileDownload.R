@@ -17,12 +17,15 @@ mod_fileDownload_ui <- function(id){
 #' fileDownload Server Functions
 #' cave: maximum upload size: 5 MB
 #' @noRd
-mod_fileDownload_server <- function(id, processedData, filename){
+mod_fileDownload_server <- function(id, processedData, filename, source){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+    ext <- switch(source,
+           CTgov = ".ris",
+           CTIS = ".tab" )
      output$download <- downloadHandler(
        filename = function(){
-         paste0(tools::file_path_sans_ext(filename()),".ris") # change output name
+         paste0(tools::file_path_sans_ext(filename()),ext) # change output name
        },
        content = function(file) { #check content
          write(processedData(),

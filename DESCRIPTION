@@ -5,15 +5,19 @@ Authors@R: person('Claudia', 'Kapp', email = 'claudia.kapp@iqwig.de', role = c('
 Description: Create import files from study registries for Endnote databases.
 License: GPL (>= 3)
 Imports: 
+    bslib,
     config (>= 0.3.1),
+    dplyr,
     golem (>= 0.4.1),
     jsonlite,
     lubridate,
     magrittr,
     pkgload,
     purrr,
+    rlang,
     shiny (>= 1.7.4.1),
     shinyFeedback,
+    stringr,
     utils,
     vroom
 Encoding: UTF-8
@@ -26,3 +30,5 @@ Config/testthat/edition: 3
 Language: en-US
 URL: https://github.com/IQWiG/registryimporter
 BugReports: https://github.com/IQWiG/registryimporter/issues
+Depends: 
+    R (>= 2.10)
