@@ -20,4 +20,6 @@ devtools::check()
 
 ## RStudio ----
 ## If you want to deploy on RStudio related platforms
+
+#!!! add to app.R options(shiny.maxRequestSize = 100*1024^2)
 golem::add_shinyserver_file()

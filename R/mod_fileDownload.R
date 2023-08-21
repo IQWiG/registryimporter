@@ -10,16 +10,26 @@
 mod_fileDownload_ui <- function(id){
   ns <- NS(id)
   tagList(
-    downloadButton("download", "Download")
+    downloadButton(ns("download"), "Download")
   )
 }
 
 #' fileDownload Server Functions
-#'
+#' cave: maximum upload size: 5 MB
 #' @noRd
-mod_fileDownload_server <- function(id){
+mod_fileDownload_server <- function(id, processedData, filename){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+     output$download <- downloadHandler(
+       filename = function(){
+         paste0(tools::file_path_sans_ext(filename()),".ris") # change output name
+       },
+       content = function(file) { #check content
+         write(processedData(),
+               sep = "\r\n",
+               file)
+        }
+      )
 
   })
 }

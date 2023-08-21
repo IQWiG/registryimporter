@@ -19,17 +19,20 @@ mod_fileUpload_ui <- function(id, placeholder, accept){
 #'
 #' @noRd
 mod_fileUpload_server <- function(id, source){
+  stopifnot(!is.reactive(source))
   moduleServer( id, function(input, output, session){
     ns <- session$ns
      rawdata <- reactive({
        req(input$upload)
        load_file(input$upload$name, input$upload$datapath)
      })
+     processedData <- reactive({process_data(rawdata(), source = source)})
 
- #   list(
-#      rawdata = rawdata(),
-      processedData <- reactive({process_data(rawdata(), source = source)})
- #  )
+   list(
+     input = reactive(input$upload),
+     rawdata = reactive(rawdata()),
+     processedData = reactive(processedData())
+   )
   })
 }
 

@@ -11,11 +11,12 @@ mod_01_CTgovConverter_ui <- function(id){
   ns <- NS(id)
   tagList(
     mod_fileUpload_ui(ns("upload"), placeholder = ".json", accept = ".json"),
-    #  mod_fileDownload_ui("download"),
+    fluidRow(column(3, mod_fileDownload_ui(ns("download"))),
+             column(9, mod_uploadInfo_ui(ns("info")))
+             ),
     h4("Download preview"),
-    #  mod_uploadInfo_ui("info"),
     mod_downloadPreview_ui(ns("preview")),
-    #verbatimTextOutput(ns("test"))
+    # verbatimTextOutput(ns("test"))
   )
 }
 
@@ -27,10 +28,10 @@ mod_01_CTgovConverter_server <- function(id){
     ns <- session$ns
 
     CTgov <- mod_fileUpload_server("upload", source = "CTgov")
-    # mod_fileDownload_server("download")
-    # mod_uploadInfo_server("info")
-    mod_downloadPreview_server("preview", processedData = CTgov)
-    #output$test <- renderText({CTgov()})
+    mod_fileDownload_server("download", processedData = CTgov$processedData, filename = CTgov$input)
+    mod_uploadInfo_server("info", json = CTgov$rawdata)
+    mod_downloadPreview_server("preview", processedData = CTgov$processedData)
+   #output$test <- renderText({CTgov$processedData()})
   })
 }
 
