@@ -12,11 +12,26 @@
 ###################################
 
 # Engineering
+#Dependencies
+use_import_from("jsonlite", "read_json")
+use_import_from("lubridate", "year")
+use_import_from("purrr", "map")
+use_import_from("purrr", "map_depth")
+use_import_from("purrr", "modify_in")
+use_import_from("purrr", "pluck")
+use_import_from("shinyFeedback", "useShinyFeedback")
+use_import_from("shinyFeedback", "feedbackDanger")
+golem::add_module("01_CTgovConverter")
+golem::add_module("fileUpload")
+golem::add_module("fileDownload")
+golem::add_module("downloadPreview")
+golem::add_module("uploadInfo")
+
 
 ## Dependencies ----
 ## Amend DESCRIPTION with dependencies read from package code parsing
 ## install.packages('attachment') # if needed.
-attachment::att_amend_desc()
+#  attachment::att_amend_desc()
 
 ## Tests ----
 ## Add one line by test you want to create

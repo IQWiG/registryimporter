@@ -9,12 +9,17 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    fluidPage(
-      h1("registryimporter"),
-      fileInput("upload", NULL, buttonLabel = "Upload...", width = "50%"),
-      downloadButton("download", "Download"),
-      h4("Download preview"),
-      verbatimTextOutput("downloadpreview")
+    navbarPage("Registry Importer",
+      tabPanel("CT.gov",
+               h2("ClinicalTrials.gov JSON to RIS Converter"),
+               mod_01_CTgovConverter_ui("01_CTgovConverter_1"),
+               textOutput("test")
+      )
+
+#      fileInput("upload", NULL, buttonLabel = "Upload...", width = "50%"),
+#      downloadButton("download", "Download"),
+#      h4("Download preview"),
+#      verbatimTextOutput("downloadpreview")
     )
   )
 }
