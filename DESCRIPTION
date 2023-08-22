@@ -16,7 +16,6 @@ Imports:
     purrr,
     rlang,
     shiny (>= 1.7.4.1),
-    shinyFeedback,
     stringr,
     utils,
     vroom
