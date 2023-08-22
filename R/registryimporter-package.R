@@ -12,6 +12,7 @@
 #' @importFrom purrr map_dfr
 #' @importFrom purrr modify_in
 #' @importFrom purrr pluck
+#' @importFrom reactable reactableOutput
 #' @importFrom rlang .data
 #' @importFrom stringr str_replace_all
 #' @importFrom utils capture.output
