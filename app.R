@@ -4,5 +4,6 @@
 
 pkgload::load_all(export_all = FALSE,helpers = FALSE,attach_testthat = FALSE)
 options( "golem.app.prod" = TRUE)
+options(shiny.maxRequestSize = 200 * 1024^2)
 registryimporter::run_app() # add parameters here (if any)
 #

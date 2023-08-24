@@ -27,6 +27,8 @@ use_import_from("utils", "write.table")
 use_import_from("dplyr", "pull")
 use_import_from("dplyr", "filter")
 use_import_from("rlang", ".data")
+use_import_from("tools", "file_ext")
+use_import_from("tools", "file_path_sans_ext")
 
 golem::add_module("01_CTgovConverter")
 golem::add_module("fileUpload")
