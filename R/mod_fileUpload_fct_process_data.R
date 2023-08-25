@@ -29,9 +29,9 @@ process_data <- function(rawdata, source){
 create_ris_entry <- function(study) {
 
   JSONpaths <- list(NCT = c("protocolSection", "identificationModule", "nctId"),
-                    Year = c("protocolSection", "statusModule", "lastUpdatePostDateStruct", "date"),
-                    Title = c( "protocolSection", "identificationModule", "officialTitle"),
-                    OtherTitles = c( "protocolSection", "identificationModule", "briefTitle"),
+                    Last_Update = c("protocolSection", "statusModule", "lastUpdatePostDateStruct", "date"),
+                    Title = c( "protocolSection", "identificationModule", "briefTitle"),
+                    OtherTitles = c( "protocolSection", "identificationModule", "officialTitle"),
                     Acronym = c("protocolSection", "identificationModule", "acronym"),
                     Conditions = c("protocolSection", "conditionsModule", "conditions"),
                     Sponsor = c("protocolSection", "sponsorCollaboratorsModule", "leadSponsor", "name"),
@@ -46,8 +46,9 @@ create_ris_entry <- function(study) {
   }
   names(registryEntry) <- names(JSONpaths)
   registryEntry["URL"] <- paste0("https://clinicaltrials.gov/study/",registryEntry["NCT"])
-  registryEntry["Year"] <- registryEntry[["Year"]] %>% year()
+  registryEntry["Year"] <- registryEntry[["Last_Update"]] %>% year()
   registryEntry[["SecondaryIDs"]] <- registryEntry[["SecondaryIDs"]] %>% map(pluck, "id")
+  registryEntry["Database"] <- paste0("CT.gov")
   registryEntry <- map_depth(registryEntry, 1, unlist)
   return(registryEntry)
 }
@@ -56,14 +57,16 @@ ctgov_json_to_ris <- function(json) {
 
   ris_fields <- list("NCT" = "AN  - ",
                      "Year" = "PY  - ",
+                     "Last_Update" = "DA  - ",
                      "Title" = "TI  - ",
-                     "OtherTitles" = "AB  - Other Titles: ",
-                     "Acronym" = "AB  - Acronym: ",
-                     "Conditions" = "AB  - Conditions: ",
+                     "OtherTitles" = "ST  - ",
+                     "Acronym" = "AB  - ",
+                     "Conditions" = "KW  - ",
                      "Sponsor" = "AU  - ",
                      "SecondaryIDs" = "C4  - ",
-                     "HasResults" = "AB  - Results posted: ",
-                     "URL" = "UR  - ")
+                     "HasResults" = "N1  - Results posted: ",
+                     "URL" = "UR  - ",
+                     "Database" = "DB  - ")
 
   for (ris_field in seq_along(ris_fields)) {
     json <- json %>%  map(\(study_index) modify_in(study_index,
