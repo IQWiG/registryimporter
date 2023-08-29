@@ -2,7 +2,7 @@ load_file <- function(name, datapath){
   ext <- tools::file_ext(name)
   switch(ext,
          csv = vroom::vroom(datapath,delim = ",", quote = '"', escape_double = F),
-         json = jsonlite::fromJSON(datapath, simplifyVector = FALSE),# add json-upload
+         json = jsonlite::fromJSON(datapath, simplifyVector = FALSE),
          validate("Could not process file. Please check the file format.")
   )
 }
@@ -31,7 +31,6 @@ create_ris_entry <- function(study) {
   JSONpaths <- list(NCT = c("protocolSection", "identificationModule", "nctId"),
                     Last_Update = c("protocolSection", "statusModule", "lastUpdatePostDateStruct", "date"),
                     Title = c( "protocolSection", "identificationModule", "briefTitle"),
-                    OtherTitles = c( "protocolSection", "identificationModule", "officialTitle"),
                     Acronym = c("protocolSection", "identificationModule", "acronym"),
                     Conditions = c("protocolSection", "conditionsModule", "conditions"),
                     Sponsor = c("protocolSection", "sponsorCollaboratorsModule", "leadSponsor", "name"),
@@ -45,6 +44,10 @@ create_ris_entry <- function(study) {
     registryEntry[[i]] <- pluck(study, !!!path)
   }
   names(registryEntry) <- names(JSONpaths)
+  if (!is.null(registryEntry[["Acronym"]])) {
+  registryEntry["Title"] <- paste0(registryEntry["Title"]," (", registryEntry["Acronym"], ")" )
+  }
+  registryEntry["Acronym"] <- NULL
   registryEntry["URL"] <- paste0("https://clinicaltrials.gov/study/",registryEntry["NCT"])
   registryEntry["Year"] <- registryEntry[["Last_Update"]] %>% year()
   registryEntry[["SecondaryIDs"]] <- registryEntry[["SecondaryIDs"]] %>% map(pluck, "id")
@@ -59,12 +62,10 @@ ctgov_json_to_ris <- function(json) {
                      "Year" = "PY  - ",
                      "Last_Update" = "DA  - ",
                      "Title" = "TI  - ",
-                     "OtherTitles" = "ST  - ",
-                     "Acronym" = "AB  - ",
                      "Conditions" = "KW  - ",
                      "Sponsor" = "AU  - ",
                      "SecondaryIDs" = "C4  - ",
-                     "HasResults" = "N1  - Results posted: ",
+                     "HasResults" = "OP  - Results posted: ",
                      "URL" = "UR  - ",
                      "Database" = "DB  - ")
 
