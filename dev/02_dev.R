@@ -47,7 +47,7 @@ golem::add_module("02_CTISConverter")
 ## Tests ----
 ## Add one line by test you want to create
 usethis::use_test("app")
-
+golem::use_module_test("mod_fileUpload")
 # Documentation
 
 ## (You'll need GitHub there)

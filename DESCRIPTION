@@ -17,6 +17,7 @@ Imports:
     reactable,
     rlang,
     shiny (>= 1.7.4.1),
+    shinyFeedback,
     stringr,
     tools,
     utils,
