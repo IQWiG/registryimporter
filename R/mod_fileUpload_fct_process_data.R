@@ -1,7 +1,7 @@
 load_file <- function(name, datapath){
   ext <- tools::file_ext(name)
   switch(ext,
-         csv = vroom::vroom(datapath,delim = ",", quote = '"', escape_double = F),
+         csv = vroom::vroom(datapath, delim = ",", quote = '"', escape_double = F, show_col_types = FALSE),
          json = jsonlite::fromJSON(datapath, simplifyVector = FALSE),
          validate("Could not process file. Please check the file format.")
   )
@@ -9,24 +9,32 @@ load_file <- function(name, datapath){
 
 process_data <- function(rawdata, source){
   if(source == "CTgov"){
-      json <- map(rawdata, \(study) create_ris_entry(study))
+      json <- purrr::map(rawdata, \(study) pull_json_data(study))
       ris <- ctgov_json_to_ris(json)
       return(ris)
 
   }else if(source == "CTIS"){
+    required_cols <- lookup %>%
+      dplyr::filter(.data$endnote_title != "Unused") %>%
+      dplyr::select("original_title") %>%
+      pull()
+
+    if(all(required_cols %in% names(rawdata)) == FALSE) {
+      validate("Not all required columns have been imported. Check the 'Display options' in CTIS to ensure, that all necessary information are exported into the csv-file.")
+      }
     dataframe <- rawdata %>%
       purrr::map_dfr(stringr::str_replace_all, pattern = "\n|\r\n", replacement = ";")
     names(dataframe) <- rename_cols_for_endnote(dataframe)
     dataframe <- create_URL(dataframe = dataframe,
                             trial_number = "Accession Number")
     dataframe <- utils::capture.output(utils::write.table(dataframe, sep = "\t", quote = F, row.names = F, col.names= T))
-    tab_delim <- c("*#Web Page", dataframe)
+    tab_delim <- c("*Web Page", dataframe)
     return(tab_delim)
   }
 
 }
 
-create_ris_entry <- function(study) {
+pull_json_data <- function(study) {
 
   JSONpaths <- list(NCT = c("protocolSection", "identificationModule", "nctId"),
                     Last_Update = c("protocolSection", "statusModule", "lastUpdatePostDateStruct", "date"),
