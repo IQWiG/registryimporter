@@ -28,7 +28,7 @@ process_data <- function(rawdata, source){
     dataframe <- create_URL(dataframe = dataframe,
                             trial_number = "Accession Number")
     dataframe <- utils::capture.output(utils::write.table(dataframe, sep = "\t", quote = F, row.names = F, col.names= T))
-    tab_delim <- c("*#Web Page", dataframe)
+    tab_delim <- c("*Web Page", dataframe)
     return(tab_delim)
   }
 
