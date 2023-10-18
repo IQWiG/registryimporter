@@ -27,7 +27,8 @@ process_data <- function(rawdata, source){
     names(dataframe) <- rename_cols_for_endnote(dataframe)
     dataframe <- create_URL(dataframe = dataframe,
                             trial_number = "Accession Number")
-    dataframe <- utils::capture.output(utils::write.table(dataframe, sep = "\t", quote = F, row.names = F, col.names= T))
+    dataframe$`Name of Database` <- "CTIS"
+    dataframe <- utils::capture.output(utils::write.table(dataframe, sep = "\t", na = "", quote = F, row.names = F, col.names= T))
     tab_delim <- c("*Web Page", dataframe)
     return(tab_delim)
   }
