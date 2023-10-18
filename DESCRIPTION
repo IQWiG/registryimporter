@@ -1,6 +1,6 @@
 Package: registryimporter
 Title: Registry Importer
-Version: 0.0.2
+Version: 0.0.3
 Authors@R: person('Claudia', 'Kapp', email = 'claudia.kapp@iqwig.de', role = c('cre', 'aut'))
 Description: Create import files from study registries for Endnote databases.
 License: GPL (>= 3)
