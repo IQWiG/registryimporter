@@ -23,12 +23,14 @@ process_data <- function(rawdata, source){
       validate("Not all required columns have been imported. Check the 'Display options' in CTIS to ensure, that all necessary information are exported into the csv-file.")
       }
     dataframe <- rawdata %>%
-      purrr::map_dfr(stringr::str_replace_all, pattern = "\n|\r\n", replacement = ";")
+      purrr::map_dfr(stringr::str_replace_all, pattern = "\n|\r|\r\n", replacement = "; ")
+    dataframe <- dataframe %>%
+      purrr::map_dfr(stringr::str_replace_all, pattern = "\t", replacement = " ")
     names(dataframe) <- lookup[match(names(dataframe), lookup[["original_title"]]),"endnote_title"] |> pull()
     dataframe <- create_URL(dataframe = dataframe,
                             trial_number = "Accession Number")
     dataframe$`Name of Database` <- "CTIS"
-    dataframe <- utils::capture.output(utils::write.table(dataframe, sep = "\t", na = "", quote = F, row.names = F, col.names= T))
+    dataframe <- utils::capture.output(utils::write.table(dataframe, sep = "\t", na = "", quote = F, row.names = F, col.names= T, eol = "\r\n"))
     tab_delim <- c("*Web Page", dataframe)
     return(tab_delim)
   }
