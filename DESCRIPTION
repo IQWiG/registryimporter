@@ -1,6 +1,6 @@
 Package: registryimporter
 Title: Registry Importer
-Version: 0.0.3
+Version: 0.0.4
 Authors@R: person('Claudia', 'Kapp', email = 'claudia.kapp@iqwig.de', role = c('cre', 'aut'))
 Description: Create import files from study registries for Endnote databases.
 License: GPL (>= 3)
@@ -24,7 +24,7 @@ Imports:
     vroom
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Suggests: 
     spelling,
     testthat (>= 3.0.0)

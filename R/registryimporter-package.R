@@ -4,6 +4,7 @@
 ## usethis namespace: start
 #' @importFrom bslib bs_theme
 #' @importFrom dplyr filter
+#' @importFrom dplyr pull
 #' @importFrom jsonlite read_json
 #' @importFrom lubridate year
 #' @importFrom magrittr %>%
