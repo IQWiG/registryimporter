@@ -24,7 +24,7 @@ process_data <- function(rawdata, source){
       }
     dataframe <- rawdata %>%
       purrr::map_dfr(stringr::str_replace_all, pattern = "\n|\r\n", replacement = ";")
-    names(dataframe) <- rename_cols_for_endnote(dataframe)
+    names(dataframe) <- lookup[match(names(dataframe), lookup[["original_title"]]),"endnote_title"] |> pull()
     dataframe <- create_URL(dataframe = dataframe,
                             trial_number = "Accession Number")
     dataframe$`Name of Database` <- "CTIS"
@@ -101,22 +101,8 @@ create_URL <- function(dataframe, trial_number) {
   if(anyNA(dataframe[[eval(trial_number)]])) {
     stop("Trial numbers are missing, cannot create URLS", call. = F)
   }
-  URL <- paste0("https://euclinicaltrials.eu/app/#/view/",dataframe[[eval(trial_number)]],"?lang=en")
+  URL <- paste0("https://euclinicaltrials.eu/search-for-clinical-trials/?lang=en&EUCT=",dataframe[[eval(trial_number)]])
   dataframe$URL <- URL
   return(dataframe)
 }
 
-#'Rename Column Names for Endnote
-#'
-#' @description Prepare the column names for Endnote.
-#' @importFrom dplyr filter
-#' @importFrom dplyr pull
-#' @return A character vector with the new column names
-#'
-#' @noRd
-rename_cols_for_endnote <- function(dataframe) {
-  endnote_names <- lookup %>%
-    dplyr::filter( .data$original_title %in% names(dataframe)) %>%
-    pull(.data$endnote_title)
-  return(endnote_names)
-}

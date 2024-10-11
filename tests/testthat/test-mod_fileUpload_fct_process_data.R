@@ -5,7 +5,7 @@ test_that("Incomplete columns in CTIS csv throw correct error", {
 
 test_that("CTIS csv can be processed correctly", {
   csv <- load_file("ctis_test_file.csv", test_path("fixtures", "ctis_test_file.csv"))
-  expect_vector(process_data(csv, source = "CTIS"), ptype = character(), size = 8)
+  expect_vector(process_data(csv, source = "CTIS"), ptype = character(), size = 19)
   })
 
 
