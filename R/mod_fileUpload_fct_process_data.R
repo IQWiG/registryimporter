@@ -6,7 +6,7 @@ load_file <- function(name, datapath){
          json = jsonlite::fromJSON(datapath , simplifyVector = FALSE),
          validate("Could not process file. Please check the file format.")
   )
-    if(!is.null(names(loadedFile))){
+    if(!is.null(names(loadedFile)) && ext == "json"){
       loadedFile <- list(loadedFile)
     }
     return(loadedFile)
