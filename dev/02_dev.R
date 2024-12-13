@@ -37,7 +37,7 @@ golem::add_module("downloadPreview")
 golem::add_module("uploadInfo")
 
 golem::add_module("02_CTISConverter")
-
+golem::add_module("03_DRKSConverter")
 
 ## Dependencies ----
 ## Amend DESCRIPTION with dependencies read from package code parsing

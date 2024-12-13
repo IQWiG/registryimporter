@@ -27,9 +27,8 @@ mod_uploadInfo_server <- function(id, rawdata ){
       } else if(is.list(rawdata())){
         length(rawdata())
       }
-
     })
-    output$uploadInfo <- renderText({paste(references(), "references uploaded.")})
+    output$uploadInfo <- renderText({paste(references(), "reference(s) uploaded.")})
 
 
   })

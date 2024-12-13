@@ -17,7 +17,11 @@ app_ui <- function(request) {
       ),
       tabPanel("CTIS",
                h4("CSV to Tab Delimited"),
-               mod_02_CTISConverter_ui("02_CTISConverter_2"))
+               mod_02_CTISConverter_ui("02_CTISConverter_2")
+               ),
+      tabPanel("DRKS",
+               h4("Multiple JSON files to RIS"),
+               mod_03_DRKSConverter_ui("03_DRKSConverter_3"))
     )
   )
 }

@@ -7,11 +7,11 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_fileUpload_ui <- function(id, placeholder, accept){
+mod_fileUpload_ui <- function(id, placeholder, accept, multiple = FALSE){
   ns <- NS(id)
   tagList(
     useShinyFeedback(),
-    fileInput(ns("upload"), NULL, buttonLabel = "Upload ...", width = "50%", placeholder = placeholder, accept = accept)
+    fileInput(ns("upload"), NULL, buttonLabel = "Upload ...", width = "50%", placeholder = placeholder, accept = accept, multiple = multiple)
   )
 }
 
@@ -22,19 +22,18 @@ mod_fileUpload_server <- function(id, source){
   stopifnot(!is.reactive(source))
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-
      rawdata <- reactive({
        req(input$upload)
        bindEvent(observe({input$upload}), {
          hideFeedback("upload")
-         if (input$upload$size < 500){
+         if (sum(input$upload$size) < 500){
            showFeedbackWarning("upload", "Small dataset < 1 Kb")
-         }else if(input$upload$size > 200 * 1024^2){
+         }else if(sum(input$upload$size) > 200 * 1024^2){
            showFeedbackDanger("upload", "Upload failed! Dataset larger than 200 MB")
          }
        }
        )
-       req(input$upload$size <= 200 * 1024^2)
+       req(sum(input$upload$size) <= 200 * 1024^2)
        load_file(input$upload$name, input$upload$datapath)
      })
 
