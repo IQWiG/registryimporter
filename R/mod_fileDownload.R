@@ -22,6 +22,7 @@ mod_fileDownload_server <- function(id, processedData, filename, source){
     ns <- session$ns
     ext <- switch(source,
            CTgov = ".ris",
+           DRKS = ".ris",
            CTIS = ".tab" )
      output$download <- downloadHandler(
        filename = function(){
